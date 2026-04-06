@@ -18,7 +18,7 @@ import PatrocinadorPage from './pages/PatrocinadorPage';
 
 function App() {
   return (
-    <Router>
+    <Router basename={import.meta.env.BASE_URL}>
       <ScrollToTop />
       <AuthProvider>
         <PilotAuthProvider>

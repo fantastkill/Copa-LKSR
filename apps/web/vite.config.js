@@ -8,6 +8,11 @@ import iframeRouteRestorationPlugin from './plugins/vite-plugin-iframe-route-res
 import pocketbaseAuthPlugin from './plugins/vite-plugin-pocketbase-auth.js';
 
 const isDev = process.env.NODE_ENV !== 'production';
+const githubRepository = process.env.GITHUB_REPOSITORY;
+const repositoryName = githubRepository?.split('/')[1];
+const githubPagesBase = repositoryName ? `/${repositoryName}/` : '/';
+const basePath =
+	process.env.VITE_BASE_PATH || (process.env.GITHUB_ACTIONS === 'true' ? githubPagesBase : '/');
 const pocketbaseProxyTarget =
 	process.env.VITE_POCKETBASE_PROXY_TARGET || 'https://04ca7ffb-7695-43af-b6d4-63bfa816d078.app-preview.com';
 
@@ -282,6 +287,7 @@ logger.error = (msg, options) => {
 }
 
 export default defineConfig({
+	base: basePath,
 	customLogger: logger,
 	plugins: [
 		...(isDev ? [inlineEditPlugin(), editModeDevPlugin(), selectionModePlugin(), iframeRouteRestorationPlugin(), pocketbaseAuthPlugin()] : []),
